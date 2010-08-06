@@ -1,0 +1,6 @@
+; $Id$
+name = Rules Geocoder
+description = This module lets you add geocoding to your Rules
+dependencies[] = rules
+dependencies[] = openlayers_cck
+core = 6.x

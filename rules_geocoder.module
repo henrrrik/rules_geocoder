@@ -1,0 +1,33 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * The Rules Geocoder module.
+ *
+ * This module provides geocoding action for Rules using Google's Maps
+ * API (v3). The action can combine one or more CCK text fields
+ * that the file can be displayed nicely in default-sized consoles.
+ */
+
+/**
+ * Geocode an address using google
+ *
+ * @param input
+ *   A string or array containing the address text that should be geocoded.
+ * @return
+ *   A string containing the position in WKT format or FALSE.
+ */
+function _rules_geocoder_geocode($input) {
+  if (is_array($input)) $input = join(',', $input);
+  $url = 'http://maps.google.com/maps/api/geocode/json?address='. urlencode($input). '&sensor=false';
+  $ret = drupal_http_request($url);
+  $result = json_decode($ret->data);
+  
+  if ($result->status == 'OK') {
+    return 'POINT('. $result->results[0]->geometry->location->lng.' '. $result->results[0]->geometry->location->lat .')';
+  }
+  return FALSE;
+}
+
+
