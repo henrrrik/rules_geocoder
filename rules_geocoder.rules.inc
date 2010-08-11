@@ -130,9 +130,4 @@ function rules_geocoder_action_geocode_fields(&$node, $settings) {
     // @TODO: Add Geo.module support
     $node->{$dest_field}[$key]['openlayers_wkt'] = $geo_output;
   }
-  $logdata = print_r($node, true);
-  $logdata .= print_r($geo_output, true);
-  $fp = fopen("/Users/henrik/Sites/esny.local/sites/default/files/testdump.txt", "w");
-  fwrite($fp, $logdata);
-  fclose($fp);
 }
