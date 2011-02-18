@@ -40,19 +40,19 @@ function rules_geocoder_action_geocode_fields_form($settings, &$form) {
   // @TODO: Weight/ordering of input fields? Google's geocoder doesn't seem to care if the ordering is crazy though.
   $fields = content_fields();
   $textfield_options = array();
+ 
   foreach ($fields as $field) {
-    if ($field['type'] == 'text') {
-      $textfield_options[$field['field_name']] = $field['widget']['label'];
+    if ($field['type'] == 'text' || $field['type'] == 'number_integer') {
+      $textfield_options[$field['field_name']] = $field['widget']['label'] .' ('. $field['field_name'] .')';
     }
   }
   $wktfield_options = array();
   foreach ($fields as $field) {
     // @TODO: Add Geo.module support
     if ($field['type'] == 'openlayers_wkt') {
-      $wktfield_options[$field['field_name']] = $field['widget']['label'];
+      $wktfield_options[$field['field_name']] = $field['widget']['label'] .' ('. $field['field_name'] .')';
     }
   }
-
   $form['settings']['sources'] = array(
     '#type' => 'select',
     '#title' => t('Source text field(s)'),
@@ -104,17 +104,8 @@ function rules_geocoder_action_geocode_fields(&$node, $settings) {
   $suffix = $settings['suffix'];
 
   // Check all the necessary prerequisites.
-//  $source_field_def = content_fields($source_fields, $node->type); 
 // @TODO: Verify that all source fields existing in the current node type
   $dest_field_def = content_fields($dest_field, $node->type);
-
-//  if (!$source_field_def) {
-//    drupal_set_message(t('This content could not be converted with FFmpeg Converter since the source field doesn\'t exist in this content type.'), 'error');
-//  }
-//  elseif (!$dest_field_def) {
-//    drupal_set_message(t('This content could not be converted with FFmpeg Converter since the destination field doesn\'t exist in this content type.'), 'error');
-//  }
-//  else {
   
   $source_strings = array();
   
